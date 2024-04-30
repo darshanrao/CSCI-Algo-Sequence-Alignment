@@ -5,8 +5,8 @@ delta=30
 letters=dict()
 letters['A']=0
 letters['C']=1
-letters['T']=2
-letters['G']=3
+letters['G']=2
+letters['T']=3
 
 alpha=np.zeros((4,4))
 for i in range(0,4):
@@ -53,3 +53,41 @@ def read_from_input_file(file):
     final_string1=input_string(base_string1,indices1)
     final_string2=input_string(base_string2,indices2)
     return final_string1,final_string2
+
+
+
+
+def seqAlign_basic(s1,s2):
+
+    
+    n= len(s1)
+    m= len(s2)
+
+    dp=np.zeros((n+1,m+1))
+
+
+    for index1 in range(0,n+1):
+        dp[index1][0]=index1*delta
+        
+    for index2 in range(0,m+1):
+        dp[0][index2]=index2*delta
+    
+
+
+    for index1 in range(1,n+1):
+        for index2 in range(1,m+1):
+            replace= dp[index1-1][index2-1]+alpha[letters[s1[index1-1]]][letters[s2[index2-1]]]
+            remove= dp[index1-1][index2]+delta
+            insert= dp[index1][index2-1]+delta
+
+            dp[index1][index2]=min(replace,remove,insert)
+        
+    return int(dp[n][m])
+
+
+s1,s2=read_from_input_file('./SampleTestCases/input1.txt')
+value=seqAlign_basic(s1,s2)
+
+print(value)
+
+

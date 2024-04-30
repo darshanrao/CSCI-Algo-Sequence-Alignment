@@ -5,8 +5,8 @@ delta=30
 letters=dict()
 letters['A']=0
 letters['C']=1
-letters['T']=2
-letters['G']=3
+letters['G']=2
+letters['T']=3
 
 alpha=np.zeros((4,4))
 for i in range(0,4):
