@@ -75,13 +75,65 @@ def seqAlign_basic(s1,s2):
             insert= dp[index1][index2-1]+delta
 
             dp[index1][index2]=min(replace,remove,insert)
-        
-    return int(dp[n][m])
+    print(s1)
+    print(s2)
+    string1,string2=topdown_pass(dp,s1,s2)
+    
+    return int(dp[n][m]),string1,string2
+
+def topdown_pass(dp,s1,s2):
+
+    n=len(s1)
+    m=len(s2)
+    i=n
+    j=m
+    maxlen=n+m+1
+    ## Can be optimized for less memory
+    list1=['*']*maxlen 
+    list2=['*']*maxlen
+    index=maxlen-1
+    while i>0 and j>0:
+
+        if dp[i][j] == dp[i][j-1]+ delta:
+            list1[index]='_'
+            list2[index]=s2[j-1]
+            j-=1
+        elif dp[i][j] == dp[i-1][j]+ delta:
+            list1[index]=s1[i-1]
+            list2[index]='_'
+            i-=1
+        elif dp[i][j] == dp[i-1][j-1]+alpha[letters[s1[i-1]]][letters[s2[j-1]]]:
+            list1[index]=s1[i-1]
+            list2[index]=s2[j-1]
+            i-=1
+            j-=1
+        index-=1
+    while i>0:
+        list1[index]=s1[i-1]
+        list2[index]='_'
+        i-=1
+        index-=1
+    
+    while j>0:
+        list1[index]='_'
+        list2[index]=s2[j-1]
+        j-=1
+        index-=1
+    
+    string1 = ''.join(list1[index+1:])
+    string2 = ''.join(list2[index+1:]) 
+    # print(string1)
+    # print(string2)
+
+    return string1, string2    
+
 
 
 s1,s2=read_from_input_file('./SampleTestCases/input1.txt')
-value=seqAlign_basic(s1,s2)
+value,string1,string2=seqAlign_basic(s1,s2)
 
 print(value)
+print(string1)
+print(string2)
 
 
