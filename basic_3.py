@@ -132,8 +132,11 @@ def topdown_pass(dp,s1,s2):
 s1,s2=read_from_input_file('./SampleTestCases/input1.txt')
 value,string1,string2=seqAlign_basic(s1,s2)
 
+
+
 print(value)
 print(string1)
+print(len(string1))
 print(string2)
 
 
