@@ -134,23 +134,23 @@ def divide(s1,s2):
 
     if n2==0:
         return s1,'_'*n1
-    if n1==0:
-        return '_'*n2,s2
+    # if n1==0:
+    #     return '_'*n2,s2
     
     if n1<=2 or n2<=2:
         return seqAlign_basic(s1,s2)
 
     middle=n1//2
-    print(s1[:middle])
-    print(s1[:middle-1:-1])
+    # print(s1[:middle])
+    # print(s1[:middle-1:-1])
     dp1= basic_dp_optimized(s1[:middle],s2)
     dp2= basic_dp_optimized(s1[-1:middle-1:-1],s2[::-1])
-
+    dp2=dp2[::-1]
     mini=dp1[0]+dp2[0]
     mini_idx=0
     for i in range(1,n2):
         if mini > (dp1[i]+dp2[i]):
-            mini= dp1[i]+dp2[n2-1-i]
+            mini= dp1[i]+dp2[i]
             mini_idx=i
     
     alignment_s1_left,alignment_s2_left = divide(s1[:middle],s2[:mini_idx])
@@ -181,25 +181,24 @@ def basic_dp_optimized(s1,s2):
     
     return prev
 
-# def seqAlign_efficient(s1,s2):
-
-# s1,s2=read_from_input_file('./SampleTestCases/input1.txt')
-# ans=basic_dp_optimized(s1,s2)
 
 
+s1,s2=read_from_input_file('./SampleTestCases/input1.txt')
+
+
+def seqAlign_efficient(s1,s2):
+    value=basic_dp_optimized(s1,s2)
+    string1,string2=divide(s1,s2)
+
+    return int(value[-1]),string1,string2
 
 
 
-# print(ans[-1])
 
-s1 ='ACACACT'
-s2='TATTAT'
-
-
-string1,string2=divide(s1,s2)
-
-print(string1)
-print(string2)
+print(seqAlign_efficient(s1,s2))
+# print(string1)
+# print(string2)
+# print(len(string1))
 
 # print(split_word(s1))
 
