@@ -1,5 +1,7 @@
 import os
 import numpy as np
+import tracemalloc
+import time
 
 delta=30
 letters=dict()
@@ -181,11 +183,6 @@ def basic_dp_optimized(s1,s2):
     
     return prev
 
-
-
-s1,s2=read_from_input_file('./SampleTestCases/input1.txt')
-
-
 def seqAlign_efficient(s1,s2):
     value=basic_dp_optimized(s1,s2)
     string1,string2=divide(s1,s2)
@@ -193,12 +190,20 @@ def seqAlign_efficient(s1,s2):
     return int(value[-1]),string1,string2
 
 
+# s1,s2=read_from_input_file('./SampleTestCases/input1.txt')
 
+for i in range(1,16):
 
-print(seqAlign_efficient(s1,s2))
-# print(string1)
-# print(string2)
-# print(len(string1))
-
-# print(split_word(s1))
-
+    t1 = time.time()
+    tracemalloc.start()
+        
+    s1,s2=read_from_input_file('C:/Users/Shardul/CS570_Algo/Project/datapoints/in' + str(i) + '.txt')
+    value,string1,string2=seqAlign_efficient(s1,s2)
+        
+    curr_mem, max_mem = tracemalloc.get_traced_memory()
+    t2 = time.time()
+    tracemalloc.stop()
+        
+    L = [str(value)+'\n', string1+'\n', string2+'\n', str(t2-t1)+'\n', str(max_mem)+'\n']
+    with open("C:/Users/Shardul/CS570_Algo/Project/outputs_efficient/output" + str(i) + ".txt", 'w') as f1:
+        f1.writelines(L)

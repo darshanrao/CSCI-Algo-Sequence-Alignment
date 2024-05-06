@@ -1,5 +1,7 @@
 import os
 import numpy as np
+import tracemalloc
+import time
 
 delta=30
 letters=dict()
@@ -75,8 +77,8 @@ def seqAlign_basic(s1,s2):
             insert= dp[index1][index2-1]+delta
 
             dp[index1][index2]=min(replace,remove,insert)
-    print(s1)
-    print(s2)
+    # print(s1)
+    # print(s2)
     string1,string2=topdown_pass(dp,s1,s2)
     
     return int(dp[n][m]),string1,string2
@@ -127,16 +129,19 @@ def topdown_pass(dp,s1,s2):
 
     return string1, string2    
 
+for i in range(1,16):
 
-
-s1,s2=read_from_input_file('./SampleTestCases/input1.txt')
-value,string1,string2=seqAlign_basic(s1,s2)
-
-
-
-print(value)
-print(string1)
-print(len(string1))
-print(string2)
-
-
+    t1 = time.time()
+    tracemalloc.start()
+        
+    s1,s2=read_from_input_file('C:/Users/Shardul/CS570_Algo/Project/datapoints/in' + str(i) + '.txt')
+    value,string1,string2=seqAlign_basic(s1,s2)
+        
+    curr_mem, max_mem = tracemalloc.get_traced_memory()
+    t2 = time.time()
+    tracemalloc.stop()
+        
+    L = [str(value)+'\n', string1+'\n', string2+'\n', str(t2-t1)+'\n', str(max_mem)+'\n']
+    with open("C:/Users/Shardul/CS570_Algo/Project/outputs_basic/output" + str(i) + ".txt", 'w') as f1:
+        f1.writelines(L)
+        
