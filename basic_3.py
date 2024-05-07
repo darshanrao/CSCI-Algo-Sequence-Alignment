@@ -134,7 +134,7 @@ for i in range(1,16):
     t1 = time.time()
     tracemalloc.start()
         
-    s1,s2=read_from_input_file('C:/Users/Shardul/CS570_Algo/Project/datapoints/in' + str(i) + '.txt')
+    s1,s2=read_from_input_file('./datapoints/in' + str(i) + '.txt')
     value,string1,string2=seqAlign_basic(s1,s2)
         
     curr_mem, max_mem = tracemalloc.get_traced_memory()
@@ -142,6 +142,6 @@ for i in range(1,16):
     tracemalloc.stop()
         
     L = [str(value)+'\n', string1+'\n', string2+'\n', str(t2-t1)+'\n', str(max_mem)+'\n']
-    with open("C:/Users/Shardul/CS570_Algo/Project/outputs_basic/output" + str(i) + ".txt", 'w') as f1:
+    with open("./outputs_basic/output" + str(i) + ".txt", 'w') as f1:
         f1.writelines(L)
         
