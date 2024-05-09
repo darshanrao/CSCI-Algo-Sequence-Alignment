@@ -11,4 +11,4 @@ input_file="$1"
 output_file="$2"
 
 # Run the Python script with input and output file paths
-python3 basic_3.py "$input_file" "$output_file"
+python3 efficient_3.py "$input_file" "$output_file"
