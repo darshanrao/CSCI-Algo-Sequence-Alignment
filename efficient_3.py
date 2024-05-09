@@ -1,7 +1,8 @@
-import os
+import sys
 import numpy as np
 import tracemalloc
 import time
+import argparse
 
 delta=30
 letters=dict()
@@ -190,20 +191,28 @@ def seqAlign_efficient(s1,s2):
     return int(value[-1]),string1,string2
 
 
-# s1,s2=read_from_input_file('./SampleTestCases/input1.txt')
+parser = argparse.ArgumentParser()
 
-for i in range(1,16):
+parser.add_argument('input_path', type=str, help='Input file path')
+parser.add_argument('output_path', type=str, help='Output file path')
 
-    t1 = time.time()
-    tracemalloc.start()
+args = parser.parse_args()
+
+
+tracemalloc.start()
+inp_path = sys.argv[1]
+s1,s2 = read_from_input_file(args.input_path)
+    
+t1 = time.time()
+value,string1,string2=seqAlign_efficient(s1,s2)
+t2 = time.time()    
+
+curr_mem, max_mem = tracemalloc.get_traced_memory()
+t = (t2-t1)*1000
+tracemalloc.stop()
+    
+L = [str(value)+'\n', string1+'\n', string2+'\n', str(t)+'\n', str(max_mem/1024)+'\n']
+with open(args.output_path, 'w') as f1:
+    f1.writelines(L)
         
-    s1,s2=read_from_input_file('./datapoints/in' + str(i) + '.txt')
-    value,string1,string2=seqAlign_efficient(s1,s2)
-        
-    curr_mem, max_mem = tracemalloc.get_traced_memory()
-    t2 = time.time()
-    tracemalloc.stop()
-        
-    L = [str(value)+'\n', string1+'\n', string2+'\n', str(t2-t1)+'\n', str(max_mem)+'\n']
-    with open("./outputs_efficient/output" + str(i) + ".txt", 'w') as f1:
-        f1.writelines(L)
+  

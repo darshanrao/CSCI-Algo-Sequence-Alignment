@@ -1,7 +1,8 @@
-import os
 import numpy as np
 import tracemalloc
 import time
+import sys
+import argparse
 
 delta=30
 letters=dict()
@@ -129,19 +130,34 @@ def topdown_pass(dp,s1,s2):
 
     return string1, string2    
 
-for i in range(1,16):
 
-    t1 = time.time()
-    tracemalloc.start()
+
+
+# Create the parser
+parser = argparse.ArgumentParser()
+
+# Add arguments for input and output file paths
+parser.add_argument('input_path', type=str, help='Input file path')
+parser.add_argument('output_path', type=str, help='Output file path')
+
+# Parse the arguments
+args = parser.parse_args()
+
+
+tracemalloc.start()
+inp_path = sys.argv[1]
+s1,s2 = read_from_input_file(args.input_path)
+    
+t1 = time.time()
+value,string1,string2=seqAlign_basic(s1,s2)
+t2 = time.time()    
+
+curr_mem, max_mem = tracemalloc.get_traced_memory()
+t = (t2-t1)*1000
+tracemalloc.stop()
+    
+L = [str(value)+'\n', string1+'\n', string2+'\n', str(t)+'\n', str(max_mem/1024)+'\n']
+with open(args.output_path, 'w') as f1:
+    f1.writelines(L)
         
-    s1,s2=read_from_input_file('./datapoints/in' + str(i) + '.txt')
-    value,string1,string2=seqAlign_basic(s1,s2)
-        
-    curr_mem, max_mem = tracemalloc.get_traced_memory()
-    t2 = time.time()
-    tracemalloc.stop()
-        
-    L = [str(value)+'\n', string1+'\n', string2+'\n', str(t2-t1)+'\n', str(max_mem)+'\n']
-    with open("./outputs_basic/output" + str(i) + ".txt", 'w') as f1:
-        f1.writelines(L)
         
